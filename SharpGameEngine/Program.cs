@@ -16,7 +16,9 @@ namespace SharpGameEngine
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GameFrame());
+            var frame = new GameFrame();
+            var engine = new GameEngine(frame);
+            Application.Run(frame);
         }
     }
 }

@@ -1,8 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
 using GameConcepts.Entities;
 
 namespace GameConcepts
 {
+    public delegate void DrawSceneHandler(Graphics graphics);
+
+    public delegate void KeyPressedHandler(KeyEventArgs args);
+
     public interface IGameState
     {
         int Lifes { get; set; }
@@ -27,12 +33,29 @@ namespace GameConcepts
         void UpdateSceneGraph();
     }
 
-    public abstract class Game : IGameState, IGameDescription
+    public interface IGameRendering
+    {
+        void UpdateScripts();
+        void RenderScene(Graphics graphics);
+        void RenderEntities(Graphics graphics);
+    }
+
+    public interface IGameEventHandler
+    {
+        void OnKeyPressed(KeyEventArgs args);
+        void OnDrawScene(Graphics graphics);
+    }
+
+    public abstract class Game : IGameState, IGameDescription, IGameRendering, IGameEventHandler
     {
         private int _lifes;
         private int _score;
         private IEnumerable<Entity> _entities;
         private IEnumerable<IGameScript> _scripts;
+
+        public abstract void OnKeyPressed(KeyEventArgs args);
+
+        public abstract void OnDrawScene(Graphics graphics);
 
         public string Name { get; }
         public string ShortDescription { get; }
@@ -64,7 +87,7 @@ namespace GameConcepts
             
         }
 
-        public void Update()
+        public void UpdateScripts()
         {
             if (_scripts != null)
                 foreach(IGameScript script in _scripts)
@@ -74,6 +97,19 @@ namespace GameConcepts
                     if (entity.Scripts != null)
                         foreach (var script in entity.Scripts)
                             script.Action(this, entity);
+        }
+
+        public void RenderScene(Graphics graphics)
+        {
+            UpdateScripts();
+            RenderEntities(graphics);
+        }
+
+        public void RenderEntities(Graphics graphics)
+        {
+            if (_entities != null)
+                foreach (var entity in _entities)
+                    entity.RenderEntity(graphics);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace SharpGameEngine
     public enum GamesEnum { Galaga };
     class GameFactory
     {
-        public Game CreateGame(GamesEnum game)
+        static public Game CreateGame(GamesEnum game)
         {
             Game chosenGame = null;
             switch (game)

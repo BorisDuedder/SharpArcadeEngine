@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms;
 using GameConcepts.Entities;
 
@@ -46,18 +47,22 @@ namespace GameConcepts
         void OnDrawScene(Graphics graphics);
     }
 
+    // Active Object
     public abstract class Game : IGameState, IGameDescription, IGameRendering, IGameEventHandler
     {
         private int _lifes;
         private int _score;
         private IEnumerable<Entity> _entities;
         private IEnumerable<IGameScript> _scripts;
+        private Entity _player;
+
+        public Entity Player { get { return _player; } set { _player = value; } }
 
         public abstract void OnKeyPressed(KeyEventArgs args);
 
         public abstract void OnDrawScene(Graphics graphics);
 
-        public string Name { get; }
+        public string Name { get; set; }
         public string ShortDescription { get; }
 
         public int Lifes
@@ -87,16 +92,40 @@ namespace GameConcepts
             
         }
 
-        public void UpdateScripts()
+        public void CallInitializeScripts()
         {
             if (_scripts != null)
-                foreach(IGameScript script in _scripts)
-                    script.Action(this);
+                foreach (IGameScript script in _scripts)
+                    script.Initialize(this);
             if (_entities != null)
                 foreach (var entity in _entities)
                     if (entity.Scripts != null)
                         foreach (var script in entity.Scripts)
-                            script.Action(this, entity);
+                            script.Initialize(this, entity);
+        }
+
+        public void UpdateScripts()
+        {
+            if (_scripts != null)
+                foreach(IGameScript script in _scripts)
+                    script.Execute(this);
+            if (_entities != null)
+                foreach (var entity in _entities)
+                    if (entity.Scripts != null)
+                        foreach (var script in entity.Scripts)
+                            script.Execute(this, entity);
+        }
+
+        public void CallDestroyScripts()
+        {
+            if (_entities != null)
+                foreach (var entity in _entities)
+                    if (entity.Scripts != null)
+                        foreach (var script in entity.Scripts)
+                            script.Destroy(this, entity);
+            if (_scripts != null)
+                foreach (IGameScript script in _scripts)
+                    script.Destroy(this);
         }
 
         public void RenderScene(Graphics graphics)
@@ -107,9 +136,13 @@ namespace GameConcepts
 
         public void RenderEntities(Graphics graphics)
         {
+            if(_player!=null)
+                _player.RenderEntity(graphics);
             if (_entities != null)
                 foreach (var entity in _entities)
                     entity.RenderEntity(graphics);
         }
+
+        public abstract Image LoadImage(string fileName);        
     }
 }

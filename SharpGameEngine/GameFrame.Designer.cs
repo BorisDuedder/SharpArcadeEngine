@@ -35,10 +35,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(614, 409);
+            this.ClientSize = new System.Drawing.Size(998, 697);
             this.DoubleBuffered = true;
-            this.MaximumSize = new System.Drawing.Size(640, 480);
-            this.MinimumSize = new System.Drawing.Size(640, 480);
+            this.MaximumSize = new System.Drawing.Size(1024, 768);
+            this.MinimumSize = new System.Drawing.Size(1024, 768);
             this.Name = "GameFrame";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Sharp Arcade Engine";

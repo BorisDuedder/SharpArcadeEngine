@@ -7,10 +7,12 @@ using GameConcepts.Entities;
 
 namespace GameConcepts
 {
+    // Command Object Interface
     public interface IGameScript
     {
+        void Execute(Game game);
+
         void Initialize(Game game);
-        void Action(Game game);
         void Collision(Game game);
         void Destroy(Game game);
     }

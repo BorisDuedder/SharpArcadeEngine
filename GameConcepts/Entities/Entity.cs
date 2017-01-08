@@ -4,34 +4,29 @@ using System.Drawing;
 
 namespace GameConcepts.Entities
 {
-    public class Entity
+    public abstract class Entity
     {
         public IEnumerable<IEntityScript> Scripts { get; }
         public int X { get; set;  }
         public int Y { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        private Game _game;
-        private Game game;
-        private IEnumerable<IEntityScript> scripts;
+        protected Game Game;
 
-        public Entity(Game game, IEnumerable<IEntityScript> scripts, int width, int height)
+        protected Entity(Game game, IEnumerable<IEntityScript> scripts, int width, int height)
         {
-            _game = game;
+            Game = game;
             Scripts = scripts;
             Width = width;
             Height = height;
         }
 
-        public Entity(Game game, IEnumerable<IEntityScript> scripts)
+        protected Entity(Game game, IEnumerable<IEntityScript> scripts)
         {
-            this.game = game;
-            this.scripts = scripts;
+            this.Game = game;
+            this.Scripts = scripts;
         }
 
-        public void RenderEntity(Graphics graphics)
-        {
-            
-        }
+        public abstract void RenderEntity(Graphics graphics);
     }
 }

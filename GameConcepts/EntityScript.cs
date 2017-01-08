@@ -7,11 +7,13 @@ using GameConcepts.Entities;
 
 namespace GameConcepts
 {
+    // Command Object Interface
     public interface IEntityScript
     {
-        void Initialize(Game game);
-        void Action(Game game, Entity entity);
+        void Execute(Game game, Entity entity);
+
+        void Initialize(Game game, Entity entity);
         void Collision(Game game, Entity entity);
-        void Destroy(Game game);
+        void Destroy(Game game, Entity entity);
     }
 }

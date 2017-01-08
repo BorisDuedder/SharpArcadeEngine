@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using GameConcepts;
 using GameConcepts.Entities;
 
 namespace GalagaGame.Entities
 {
-    internal class Enemies : Entity
+    public class Enemies : Entity
     {
         public Enemies(int scoreValue, Game game, IEnumerable<IEntityScript> scripts, int width, int height) : base(game, scripts, width, height)
         {
@@ -12,5 +13,9 @@ namespace GalagaGame.Entities
         }
 
         public int ScoreValue { get; }
+        public override void RenderEntity(Graphics graphics)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
